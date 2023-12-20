@@ -49,14 +49,14 @@ public class UserController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"请求参数为空");
         }
         // 取出每一个元素
-        String userCode = addUserDTO.getUserCode().toString();
+
         String username = addUserDTO.getUsername();
         String password = addUserDTO.getPassword();
         String deptName = addUserDTO.getDeptName();
-        if (StringUtils.isAnyBlank(username,userCode,password,deptName)){
+        if (StringUtils.isAnyBlank(username,password,deptName)){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"数据为空");
         }
-        long addUserId = tUserService.addUser(addUserDTO, request);
+        long addUserId = tUserService.addUser(addUserDTO);
         return ResultUtils.success(addUserId);
 
     }

@@ -17,5 +17,5 @@ public interface TUserService extends IService<TUser> {
 
     SearchPO getByUsername(String username);
 
-    long addUser(AddUserDTO addUserDTO, HttpServletRequest request);
+    long addUser(AddUserDTO addUserDTO);
 }

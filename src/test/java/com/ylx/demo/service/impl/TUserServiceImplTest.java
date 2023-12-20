@@ -1,5 +1,6 @@
 package com.ylx.demo.service.impl;
 
+import com.ylx.demo.model.dto.AddUserDTO;
 import com.ylx.demo.model.po.SearchPO;
 import com.ylx.demo.service.TUserService;
 import org.junit.jupiter.api.Assertions;
@@ -22,5 +23,12 @@ public class TUserServiceImplTest {
 
     @Test
     public void addUser() {
+        AddUserDTO addUserDTO = new AddUserDTO();
+        addUserDTO.setUsername("赵四");
+        addUserDTO.setPassword("123");
+        addUserDTO.setDeptName("宣传部");
+
+        long l = tUserService.addUser(addUserDTO);
+        System.out.println(l);
     }
 }

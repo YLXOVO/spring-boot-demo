@@ -54,20 +54,17 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser>
     }
 
     @Override
-    public long addUser(AddUserDTO addUserDTO, HttpServletRequest request) {
+    public long addUser(AddUserDTO addUserDTO) {
         // 判断传入的参数是否为空
         if (addUserDTO ==null ){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"请求参数不能为空");
         }
         // 取出各个字段，分别判断
-        Integer userCode = addUserDTO.getUserCode();
+
         String username = addUserDTO.getUsername();
         String password = addUserDTO.getPassword();
         String deptName = addUserDTO.getDeptName();
 
-        if (userCode < 0 || userCode == null){
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"用户代码不能小于0 ");
-        }
         if (StringUtils.isAnyBlank(username,password,deptName)){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"参数不能为空");
         }
@@ -77,15 +74,13 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser>
         // 判断用户是否存在
         QueryWrapper<TUser> tUserQueryWrapper = new QueryWrapper<>();
         tUserQueryWrapper.eq("username",username);
-        tUserQueryWrapper.eq("password",encryptPassword);
-        TUser selectOne = tUserMapper.selectOne(tUserQueryWrapper);
-        if (selectOne != null){
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"用户已存在");
+        Long count = tUserMapper.selectCount(tUserQueryWrapper);
+        if (count >0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"用户已存在");
         }
 
         // 创建用户对象
         TUser tUser = new TUser();
-        tUser.setUserCode(userCode);
         tUser.setPassword(encryptPassword);
         tUser.setUsername(username);
         tUser.setDeptName(deptName);
